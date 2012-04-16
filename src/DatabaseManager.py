@@ -42,20 +42,24 @@ class DatabaseManager(object):
             inp_items = inp_str.split(" ")
             command, args = inp_items[0], inp_items[1:]
             command = command.upper()
-
+            
+            if command not in COMMANDS:
+                self._writer("Unrecognized command [{}]".format(command))
+                continue
+            
             if command == "GET":
                 name = args[0]
-                value = self._database.get_item(name)
-                if value is self._database.DefaultValue:
+                value = self._database[name]
+                if value is None:
                     value = "NULL"
                 self._writer(value)
             elif command == "SET":
                 name = args[0]
                 value = args[1]
-                self._database.set_item(name, value)
+                self._database[name] = value
             elif command == "UNSET":
                 name = args[0]
-                self._database.unset_item(name)
+                del self._database[name]
             elif command == "BEGIN":
                 self._database.begin_transaction()
             elif command == "ROLLBACK":
@@ -67,5 +71,4 @@ class DatabaseManager(object):
                 self._database.commit_transactions()
             elif command == "END":
                 return
-            else:
-                self._writer("Unrecognized command [{}]".format(command))
+                
