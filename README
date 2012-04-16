@@ -1,0 +1,51 @@
+To run a session similar to those on 
+http://www.thumbtack.com/challenges, simply ruin Main.py
+
+Note that this uses a deferred writer, so that responses to 
+commands are suppressed until you send "END" at which point,
+the entire output is written to screen.
+
+Example session:
+
+SET a 50
+BEGIN
+GET a
+SET a 60
+BEGIN
+UNSET a
+GET a
+ROLLBACK
+GET a
+COMMIT
+GET a
+END
+50
+NULL
+60
+60
+
+
+Note that there is no prompt symbol (as in the sample input/output),
+but one can be specified when creating the DatabaseManager.
+
+The following DatabaseManager:
+DBM = DatabaseManager.DatabaseManager(GENERIC_DB, '>>> ')
+
+produces the following session (same as above)
+
+>>> SET a 50
+>>> BEGIN
+>>> GET a
+50
+>>> SET a 60
+>>> BEGIN
+>>> UNSET a
+>>> GET a
+NULL
+>>> ROLLBACK
+>>> GET a
+60
+>>> COMMIT
+>>> GET a
+60
+>>> END
