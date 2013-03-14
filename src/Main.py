@@ -10,7 +10,7 @@ lines = []
 def deferred_writer(line):
     lines.append(line)
 def print_writer():
-    print '\n'.join(lines)
+    print '\$ n'.join(lines)
 
 
 GENERIC_DB = Database.Database()
